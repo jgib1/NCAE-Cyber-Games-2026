@@ -1,0 +1,23 @@
+user remove admin
+user disable remove
+ip address remove numbers=(wan interface)
+ip firewall filter chain=input action=drop
+ip firewall filter chain=forward action=drop
+ip service set winbox disabled=yes
+ip service set ftp disabled=yes
+ip service set telnet disabled =yes
+ip service set api disabled=yes
+ip address add address=192.168.20.1 interface=ether1
+p firewall filter add chain=forward action=accept connection-state=established,related place-before=0
+ip firewall filter add chain=input action=accept connection-state=established,related place-before=0
+ip firewall filter add chain=input action=accept src-address=192.168.20.0/24 dst-port=8080 protocol=tcp place-before=0
+ip firewall filter add chain=input protocol=icmp action=accept place-before=0
+interface bridge add disabled=no protocol-mode=rstp
+interface bridge port add bridge=bridge1 disabled=no interface=ether1
+interface list member add interface=ether0 list=WAN
+interface list member add interface=ether1 list=LAN
+ip firewall nat add action=masquerade chain=srcnat disabled=no out-interface-list=WAN
+ip firewall nat add action=dst-nat chain=dstnat dst-port=80 in-interface-list=WAN protocol=tcp to-addresses=192.168.20.5
+ip firewall nat add set action=dst-nat chain=dstnat dst-port=80 in-interface-list=WAN protocol=udp to-addresses=192.168.20.5
+ip dns set servers=172.18.0.12
+ip route add dst-address=0.0.0.0/0 gateway=172.18.0.1
