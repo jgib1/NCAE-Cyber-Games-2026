@@ -32,6 +32,9 @@ add list=PERMITTEDEXT address=$extDNS comment="External DNS"
 add list=PERMITTEDEXT address=$extCA comment="Certificate Authority"
 add list=PERMITTEDEXT address=$extCDN comment="CDN"
 add list=MGMTJUMP address=($jumpIP."/32") comment="Jump host"
+add list=COMPROMISED address=192.168.19.5 comment="Compromised web server"
+add list=COMPROMISED address=192.168.19.7 comment="Compromised database"
+add list=COMPROMISED address=192.168.19.12 comment="Compromised DNS"
 
 /ip service
 set telnet disabled=yes
@@ -60,6 +63,8 @@ add chain=forward action=accept in-interface-list=LAN src-address-list=MGMTLAN d
 add chain=forward action=accept in-interface-list=LAN src-address-list=MGMTLAN dst-address-list=SRVDNS protocol=tcp dst-port=22 comment="FW MGMTLAN to DNS SSH"
 add chain=forward action=accept in-interface-list=LAN src-address-list=MGMTLAN dst-address-list=SRVDB protocol=tcp dst-port=22 comment="FW MGMTLAN to DB SSH"
 add chain=forward action=accept in-interface-list=LAN src-address-list=MGMTLAN dst-address-list=SRVBAK protocol=tcp dst-port=22 comment="FW MGMTLAN to BACKUP SSH"
+add chain=forward action=drop in-interface-list=LAN out-interface-list=WAN src-address-list=COMPROMISED protocol=tcp dst-port=443 comment="FW block compromised host HTTPS egress" log=yes log-prefix="FWC2DROP"
+add chain=forward action=drop in-interface-list=LAN out-interface-list=WAN src-address-list=COMPROMISED protocol=tcp dst-port=80 comment="FW block compromised host HTTP egress" log=yes log-prefix="FWC2DROP"
 add chain=forward action=accept in-interface-list=LAN out-interface-list=WAN dst-address-list=PERMITTEDEXT protocol=tcp dst-port=80,443 comment="FW LAN to permitted ext TCP 80443"
 add chain=forward action=accept in-interface-list=LAN out-interface-list=WAN dst-address-list=PERMITTEDEXT protocol=udp dst-port=53 comment="FW LAN to permitted ext DNS UDP"
 add chain=forward action=accept in-interface-list=LAN out-interface-list=WAN dst-address-list=PERMITTEDEXT protocol=tcp dst-port=53 comment="FW LAN to permitted ext DNS TCP"
