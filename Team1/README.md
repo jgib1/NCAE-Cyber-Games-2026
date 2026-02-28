@@ -5,3 +5,4 @@ The following scripts were developed by our team for the 2026 NCAE Cyber Games c
 
 ---
 - [DNS Setup](dns_setup.sh)
+- [Router Hardening](MikroTikHardening.rsc)
