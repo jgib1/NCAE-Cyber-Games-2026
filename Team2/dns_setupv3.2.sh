@@ -13,9 +13,8 @@ EXTERNAL_ROUTER_IP="172.18.13.${TEAM_NUM}"
 EXTERNAL_ROUTER_OCTET3=$(echo ${EXTERNAL_ROUTER_IP} | cut -d. -f3)
 EXTERNAL_ROUTER_OCTET4=$(echo ${EXTERNAL_ROUTER_IP} | cut -d. -f4)
 EXTERNAL_REVERSE_ZONE="18.172"
-SERIAL=$(date +%Y%m%d01)
+SERIAL=$(date +%Y%m%d%H%M)
 DOMAIN="team20.ncaecybergames.org"
-#################################################################################################
 
 #Internal Network IPs
 IP_ROUTER="192.168.${TEAM_NUM}.1"
@@ -24,16 +23,14 @@ IP_DB="192.168.${TEAM_NUM}.7"
 IP_DNS="192.168.${TEAM_NUM}.12"
 IP_BACKUP="192.168.${TEAM_NUM}.15"
 
-#Reverse
-REVERSE_ZONE="${TEAM_NUM}.168.192"
-
-#Zone/Log paths
+#Zones/Log paths
 ZONE_DIR="/var/named/zones"
 ZONE_INTERNAL="${ZONE_DIR}/forward.internal.${DOMAIN}"
 ZONE_EXTERNAL="${ZONE_DIR}/forward.external.${DOMAIN}"
 ZONE_REVERSE_INT="${ZONE_DIR}/reverse.internal.${DOMAIN}"
 ZONE_REVERSE_EXT="${ZONE_DIR}/reverse.external.${DOMAIN}"
 LOG_DIR="/var/log/named"
+REVERSE_ZONE="${TEAM_NUM}.168.192"
 
 #FUN COLORS!!!
 #################################################################################################
@@ -45,7 +42,6 @@ section() { echo -e "\n\e[36m(╯°□°）╯︵ ┻━┻  $1 ┬─┬﻿ ノ
 
 #Check that script is being run as root
 ################################################################################################
-#https://askubuntu.com/questions/15853/how-can-a-script-check-if-its-being-run-as-root
 if [[ $EUID -ne 0 ]]; then
    echo "This script must be run as root" 
    exit 1
@@ -182,7 +178,7 @@ fi
 cat > /etc/named.conf << EOF
 
 options {
-    listen-on port 53       { 127.0.0.1; ${INTERNAL_IP}; ${EXTERNAL_SUBNET}; };
+    listen-on port 53       { 127.0.0.1; ${INTERNAL_IP}; ${EXTERNAL_ROUTER_IP}; };
     listen-on-v6 port 53    { none; };
     directory               "/var/named";
     dump-file               "/var/named/data/cache_dump.db";
