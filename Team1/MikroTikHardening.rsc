@@ -32,6 +32,9 @@ add list=PERMITTEDEXT address=$extDNS comment="External DNS"
 add list=PERMITTEDEXT address=$extCA comment="Certificate Authority"
 add list=PERMITTEDEXT address=$extCDN comment="CDN"
 add list=MGMTJUMP address=($jumpIP."/32") comment="Jump host"
+add list=COMPROMISED address=192.168.19.5 comment="Compromised web server"
+add list=COMPROMISED address=192.168.19.7 comment="Compromised database"
+add list=COMPROMISED address=192.168.19.12 comment="Compromised DNS"
 
 /ip service
 set telnet disabled=yes
@@ -52,6 +55,9 @@ add chain=input action=drop in-interface-list=WAN comment="IN drop all other WAN
 add chain=input action=drop comment="IN implicit deny" log=yes log-prefix="INDROP"
 add chain=forward action=drop connection-state=invalid comment="FW drop invalid" log=yes log-prefix="FWINVALID"
 add chain=forward action=accept connection-state=established,related comment="FW accept established,related"
+add chain=forward action=drop in-interface-list=LAN out-interface-list=WAN src-address-list=COMPROMISED comment="FW block all compromised WAN egress" log=yes log-prefix="FWC2DROP"
+add chain=forward action=drop in-interface-list=LAN src-address-list=COMPROMISED protocol=udp dst-port=53 dst-address=!192.168.19.12 comment="FW block compromised DNS UDP" log=yes log-prefix="FWC2DNSUDP"
+add chain=forward action=drop in-interface-list=LAN src-address-list=COMPROMISED protocol=tcp dst-port=53 dst-address=!192.168.19.12 comment="FW block compromised DNS TCP" log=yes log-prefix="FWC2DNSTCP"
 add chain=forward action=accept connection-nat-state=dstnat comment="FW allow dstnat forwards" log=yes log-prefix="FWDNATOK"
 add chain=forward action=accept in-interface-list=LAN dst-address-list=SRVDNS protocol=udp dst-port=53 comment="FW LAN to DNS UDP"
 add chain=forward action=accept in-interface-list=LAN dst-address-list=SRVDNS protocol=tcp dst-port=53 comment="FW LAN to DNS TCP"
