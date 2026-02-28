@@ -1,6 +1,6 @@
 :local T 19
-:local wanIF "ether5"
-:local lanIF "ether6"
+:local wanIF "ether1"
+:local lanIF "ether2"
 :local lanNet "192.168.19.0/24"
 :local webIP "192.168.19.5"
 :local dbIP "192.168.19.7"
