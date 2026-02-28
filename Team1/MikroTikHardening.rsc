@@ -18,8 +18,8 @@ add name=WAN comment="NCAE WAN list"
 add name=LAN comment="NCAE LAN list"
 
 /interface list member
-add interface=$wanIF list=WAN
-add interface=$lanIF list=LAN
+add interface=ether1 list=WAN
+add interface=ether2 list=LAN
 
 /ip firewall address-list
 add list=MGMTLAN address=$lanMgmt comment="LAN management scope"
