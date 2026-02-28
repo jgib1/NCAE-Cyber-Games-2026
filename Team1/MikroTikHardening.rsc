@@ -16,6 +16,7 @@
 :local EXT_DNS "172.18.0.12"
 :local EXT_CA "172.18.0.38"
 :local EXT_CDN "172.18.13.25"
+:local JUMP_IP "172.18.12.15"
 
 /interface list
 add name=WAN comment="NCAE WAN list"
@@ -35,6 +36,7 @@ add list=PERMITTED_EXT address=$EXT_GW comment="Competition gateway"
 add list=PERMITTED_EXT address=$EXT_DNS comment="External DNS"
 add list=PERMITTED_EXT address=$EXT_CA comment="Certificate Authority"
 add list=PERMITTED_EXT address=$EXT_CDN comment="CDN"
+add list=MGMT_JUMP address=($JUMP_IP."/32") comment="Jump host"
 
 /ip service
 set telnet disabled=yes
