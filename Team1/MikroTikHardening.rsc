@@ -64,11 +64,15 @@ add chain=forward action=accept in-interface-list=LAN out-interface-list=WAN dst
 add chain=forward action=accept in-interface-list=LAN out-interface-list=WAN dst-address-list=PERMITTEDEXT protocol=udp dst-port=53 comment="FW LAN to permitted ext DNS UDP"
 add chain=forward action=accept in-interface-list=LAN out-interface-list=WAN dst-address-list=PERMITTEDEXT protocol=tcp dst-port=53 comment="FW LAN to permitted ext DNS TCP"
 add chain=forward action=accept in-interface-list=LAN out-interface-list=WAN dst-address=$extGW comment="FW LAN to competition gateway"
+add chain=forward action=drop in-interface-list=LAN out-interface-list=WAN protocol=udp dst-port=53 comment="FW block LAN direct external DNS UDP" log=yes log-prefix="FWDNSLEAK"
+add chain=forward action=drop in-interface-list=LAN out-interface-list=WAN protocol=tcp dst-port=53 comment="FW block LAN direct external DNS TCP" log=yes log-prefix="FWDNSLEAK"
 add chain=forward action=drop in-interface-list=LAN out-interface-list=WAN comment="FW drop all other LAN egress" log=yes log-prefix="FWEGRESSDROP"
 add chain=forward action=drop in-interface-list=WAN out-interface-list=LAN connection-nat-state=!dstnat comment="FW drop WAN to LAN not dstnat" log=yes log-prefix="FWWANNODNAT"
 add chain=forward action=drop comment="FW implicit deny" log=yes log-prefix="FWDROP"
 
 /ip firewall nat
+add chain=dstnat action=dst-nat in-interface-list=LAN protocol=udp dst-port=53 dst-address=!192.168.19.12 to-addresses=192.168.19.12 to-ports=53 comment="NAT redirect rogue LAN DNS UDP to internal DNS"
+add chain=dstnat action=dst-nat in-interface-list=LAN protocol=tcp dst-port=53 dst-address=!192.168.19.12 to-addresses=192.168.19.12 to-ports=53 comment="NAT redirect rogue LAN DNS TCP to internal DNS"
 add chain=srcnat action=masquerade out-interface-list=WAN comment="NAT masquerade LAN to WAN"
 add chain=dstnat action=dst-nat in-interface-list=WAN protocol=tcp dst-port=80 to-addresses=$webIP to-ports=80 comment="DNAT HTTP to WEB"
 add chain=dstnat action=dst-nat in-interface-list=WAN protocol=tcp dst-port=443 to-addresses=$webIP to-ports=443 comment="DNAT HTTPS to WEB"
