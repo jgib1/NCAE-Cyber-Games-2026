@@ -6,7 +6,7 @@
 :local T 19
 :local WAN_IF "ether1"
 :local LAN_IF "ether2"
-:local LAN_NET ("192.168.".$T.".0/24")
+:local LAN_NET "192.168.".$T.".0/24"
 :local WEB_IP ("192.168.".$T.".5")
 :local DB_IP ("192.168.".$T.".7")
 :local DNS_IP ("192.168.".$T.".12")
