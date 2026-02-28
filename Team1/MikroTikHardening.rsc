@@ -1,17 +1,17 @@
 :local T 19
-:local WAN_IF "ether1"
-:local LAN_IF "ether2"
-:local LAN_NET "192.168.".$T.".0/24"
-:local WEB_IP ("192.168.".$T.".5")
-:local DB_IP ("192.168.".$T.".7")
-:local DNS_IP ("192.168.".$T.".12")
-:local BAK_IP ("192.168.".$T.".15")
-:local LAN_MGMT_NET $LAN_NET
-:local EXT_GW "172.18.0.1"
-:local EXT_DNS "172.18.0.12"
-:local EXT_CA "172.18.0.38"
-:local EXT_CDN "172.18.13.25"
-:local JUMP_IP "172.18.12.15"
+:local wanIF "ether5"
+:local lanIF "ether6"
+:local lanNet "192.168.19.0/24"
+:local webIP "192.168.19.5"
+:local dbIP "192.168.19.7"
+:local dnsIP "192.168.19.12"
+:local bakIP "192.168.19.15"
+:local lanMgmt "192.168.19.0/24"
+:local extGW "172.18.0.1"
+:local extDNS "172.18.0.12"
+:local extCA "172.18.0.38"
+:local extCDN "172.18.13.25"
+:local jumpIP "172.18.12.15"
 
 /interface list
 add name=WAN comment="NCAE WAN list"
