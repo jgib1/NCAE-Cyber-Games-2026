@@ -96,6 +96,10 @@ add chain=dstnat action=dst-nat in-interface-list=WAN protocol=tcp dst-port=80 t
 add chain=dstnat action=dst-nat in-interface-list=WAN protocol=tcp dst-port=443 to-addresses=$WEB_IP to-ports=443 comment="DNAT HTTPS to WEB"
 add chain=dstnat action=dst-nat in-interface-list=WAN protocol=udp dst-port=53 to-addresses=$DNS_IP to-ports=53 comment="DNAT DNS UDP to DNS"
 add chain=dstnat action=dst-nat in-interface-list=WAN protocol=tcp dst-port=53 to-addresses=$DNS_IP to-ports=53 comment="DNAT DNS TCP to DNS"
+add chain=dstnat action=dst-nat in-interface-list=WAN src-address-list=MGMT_JUMP protocol=tcp dst-port=2205 to-addresses=$WEB_IP to-ports=22 comment="DNAT JUMP to WWW SSH"
+add chain=dstnat action=dst-nat in-interface-list=WAN src-address-list=MGMT_JUMP protocol=tcp dst-port=2207 to-addresses=$DB_IP to-ports=22 comment="DNAT JUMP to DB SSH"
+add chain=dstnat action=dst-nat in-interface-list=WAN src-address-list=MGMT_JUMP protocol=tcp dst-port=2212 to-addresses=$DNS_IP to-ports=22 comment="DNAT JUMP to DNS SSH"
+add chain=dstnat action=dst-nat in-interface-list=WAN src-address-list=MGMT_JUMP protocol=tcp dst-port=2215 to-addresses=$BAK_IP to-ports=22 comment="DNAT JUMP to BACKUP SSH"
 
 # ----------------------------
 # POST-LOAD VERIFICATION (run manually after import)
