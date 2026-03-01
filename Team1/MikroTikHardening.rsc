@@ -1,3 +1,8 @@
+# NCAE Cyber Games 2026 Regional - Team 19 RouterOS Hardening Script
+# WAN (ether5): 172.18.13.19 | LAN (ether6): 192.168.19.1
+# Jump host: 172.18.12.15 | Router SSH port: 2213
+# Sean Hughes (newahntz) - 2026
+
 :local T 19
 :local wanIF "ether1"
 :local lanIF "ether2"
