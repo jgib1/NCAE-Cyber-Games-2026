@@ -1,3 +1,6 @@
+# NCAE Cyber Games 2026 Regional - Team 19 SSH user deployment script
+# Sean Hughes (newahntz) - 2026
+
 for user in clancy todd_k torch_bearer ned trash blurry_face nico keons sacarvo listo lisdn reisdro vetomo nills vialists simone_weil henri_cartan claude_chevalley; do
   useradd -m -s /bin/bash "$user" 2>/dev/null
   mkdir -p /home/$user/.ssh
